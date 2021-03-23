@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    
+
+    <div class="form">
+        <% if (message.length > 0) { %>
+            <div class="alert alert-danger">
+                <%= message %>
+            </div>
+        <% } %>
+
+        <form class="form-horizontal signin" action="/login" method="post">
+            <div class="form-wrap" style="position: relative;">
+              <h2>Iniciar sesión</h2>
+              <div class="form-group">
+                  <!-- <label for="email">Username:</label> -->
+                  <div class="relative">
+                      <input class="form-control" type="email" name="email" placeholder="Correo">
+                      <i class="fa fa-user"></i>
+                  </div>
+              </div>
+              
+              <div class="form-group">
+                  <!-- <label for="email">Password:</label> -->
+                  <div class="relative">
+                      <input class="form-control" type="password" name="password" placeholder="Contraseña">
+                      <i class="fa fa-key"></i>
+                  </div>
+              </div> 
+                              
+              <div class="login-btn">
+                  <button class="movebtn movebtnsu" type="Submit">Iniciar sesión <i class="fa fa-fw fa-lock"></i></button>
+                  <div class="relative"><hr><span class="login-text">o iniciar con</span></div>
+                  <div class="clearfix"></div>
+                  <div class="social-btn clearfix">
+                      <a href="/auth/google"><button class="movebtn google" type="button">Google <i class="fa fa-fw fa-google"></i></button></a>
+                      <a href="/auth/facebook"><button class="movebtn facebook" type="button">Facebook <i class="fa fa-fw fa-facebook"></i></button></a>
+                  </div>
+              </div>
+              
+            </div>
+            <div class="sign-up">
+              <a href="/signup" class="signbtn"><small>Registrarse</small></a>
+          </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+</body>
+</html>
