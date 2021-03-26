@@ -15,7 +15,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
+        <div class="container">
             <a class="navbar-brand" href="#">Apuestas Online</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
                 aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,7 +24,7 @@
             <div class="collapse navbar-collapse" id="navbarScroll">
                 <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+                        <a class="nav-link active d-none" aria-current="page" href="#">Inicio</a>
                     </li>
                 </ul>
                 <div class="d-flex align-items-center">
@@ -46,6 +46,39 @@
             </div>
         </div>
     </nav>
+
+    <div class="container pt-5 d-flex justify-content-center">
+        <div class="card" style="width: 300px;">
+            <div class="card-header">
+                Escoja un número del 1 al 100
+            </div>
+
+            <form id="apostarForm" action="/apostar" method="post">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="inputApuesta" class="form-label">Apuesta</label>
+                        <input type="number" class="form-control" id="inputApuesta" name="dineroApostado">
+                    </div>
+    
+                    <div class="mb-3">
+                        <label for="inputNumero" class="form-label">Número</label>
+                        <input type="number" class="form-control" id="inputNumero" name="numeroApostado" min="1" max="100">
+                    </div>
+    
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-primary" id="btnJugar" form="apostarForm">Jugar</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="card-footer d-none">
+                <div class="mb-3">
+                    <label for="inputResultado" class="form-label">Resultado</label>
+                    <input type="number" class="form-control" id="inputResultado" >
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Optional JavaScript; choose one of the two! -->
 
@@ -98,7 +131,30 @@
             }
         };
 
-      </script>
+        $('#btnJugar').on('click', function(e) {
+            let numero = parseInt($('#inputNumero').val());
+            let apuesta = parseInt($('#inputApuesta').val());
+
+            if (!(Number.isInteger(numero) && Number.isInteger(apuesta))) {
+                alert("Ingrese los números");
+            } else if (numero > 100 || numero < 1) {
+                alert("Escoja un número entre 1 y 100");
+            } else {
+
+                $.post( "http://localhost:3000/apostar", { numero, apuesta } )
+                        .done(function (res) {
+                            alert(res.msg);
+                            window.location.href = res.redirect_url;
+                        });
+
+            }
+        });
+
+    </script>
+
+    <script>
+        
+    </script>
       
 </body>
 

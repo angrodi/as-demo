@@ -44,6 +44,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // routes ======================================================================
 require("./routes/auth.routes")(app, passport); // load our routes and pass in our app and fully configured passport
 require("./routes/pago.routes")(app);
+require("./routes/apuesta.routes")(app);
 
 // launch ======================================================================
 app.listen(3000);
