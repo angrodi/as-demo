@@ -34,7 +34,7 @@
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="userMenu"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <%= user.google.email || user.facebook.email || user.local.email %>
+                            <%= user.email %>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
                             <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
@@ -66,7 +66,7 @@
     <script src="https://checkout.culqi.com/js/v3"></script>
 
     <script>
-        Culqi.publicKey = 'pk_test_6bebcbdb29942105';
+        Culqi.publicKey = 'pk_test_ddc7051c4d2f0733';
 
         Culqi.settings({
             title: 'Apuestas online',
@@ -84,11 +84,13 @@
         function culqi() {
             if (Culqi.token) { // ¡Objeto Token creado exitosamente!
                 var token = Culqi.token.id;
-                alert('Se ha creado un token:' + $('#userMenu').text().trim());
 
                 //En esta linea de codigo debemos enviar el "Culqi.token.id"
                 //hacia tu servidor con Ajax
-                $.post( "http://localhost:3000/pago", { token, email: $('#userMenu').text().trim() } );
+                $.post( "http://localhost:3000/pago", { token, email: $('#userMenu').text().trim() } )
+                    .done(function (res) {
+                        window.location.href = res.redirect_url;
+                    });
             } else { // ¡Hubo algún problema!
                 // Mostramos JSON de objeto error en consola
                 console.log(Culqi.error);

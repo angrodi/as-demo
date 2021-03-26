@@ -51,7 +51,7 @@ module.exports = function (passport) {
                     // find a user whose email is the same as the forms email
                     // we are checking to see if the user trying to login already exists
                     User.findOne(
-                        { "local.email": email },
+                        { "email": email },
                         function (err, user) {
                             // if there are any errors, return the error
                             if (err) return done(err);
@@ -72,8 +72,8 @@ module.exports = function (passport) {
                                 var newUser = new User();
 
                                 // set the user's local credentials
-                                newUser.local.email = email;
-                                newUser.local.password = newUser.generateHash(
+                                newUser.email = email;
+                                newUser.password = newUser.generateHash(
                                     password
                                 );
 
@@ -104,7 +104,7 @@ module.exports = function (passport) {
 
                 // find a user whose email is the same as the forms email
                 // we are checking to see if the user trying to login already exists
-                User.findOne({ "local.email": email }, function (err, user) {
+                User.findOne({ "email": email }, function (err, user) {
                     // if there are any errors, return the error before anything else
                     if (err) return done(err);
 
@@ -150,7 +150,7 @@ module.exports = function (passport) {
                 process.nextTick(function () {
                     // find the user in the database based on their facebook id
                     User.findOne(
-                        { "facebook.id": profile.id },
+                        { "uid": profile.id },
                         function (err, user) {
                             // if there is an error, stop everything and return that
                             // ie an error connecting to the database
@@ -164,10 +164,11 @@ module.exports = function (passport) {
                                 var newUser = new User();
 
                                 // set all of the facebook information in our user model
-                                newUser.facebook.id = profile.id; // set the users facebook id
-                                newUser.facebook.token = token; // we will save the token that facebook provides to the user
-                                newUser.facebook.name = profile.name.givenName + " " + profile.name.familyName; // look at the passport user profile to see how names are returned
-                                newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+                                newUser.uid = profile.id; // set the users facebook id
+                                newUser.token = token; // we will save the token that facebook provides to the user
+                                newUser.name = profile.name.givenName + " " + profile.name.familyName; // look at the passport user profile to see how names are returned
+                                newUser.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+                                newUser.provider = 'facebook';
 
                                 // save our user to the database
                                 newUser.save(function (err) {
@@ -200,7 +201,7 @@ module.exports = function (passport) {
                 process.nextTick(function () {
                     // try to find the user based on their google id
                     User.findOne(
-                        { "google.id": profile.id },
+                        { "uid": profile.id },
                         function (err, user) {
                             if (err) return done(err);
 
@@ -212,10 +213,11 @@ module.exports = function (passport) {
                                 var newUser = new User();
 
                                 // set all of the relevant information
-                                newUser.google.id = profile.id;
-                                newUser.google.token = token;
-                                newUser.google.name = profile.displayName;
-                                newUser.google.email = profile.emails[0].value; // pull the first email
+                                newUser.uid = profile.id;
+                                newUser.token = token;
+                                newUser.name = profile.displayName;
+                                newUser.email = profile.emails[0].value; // pull the first email
+                                newUser.provider = 'google'
 
                                 // save the user
                                 newUser.save(function (err) {

@@ -1,3 +1,4 @@
+const { json } = require('express');
 const fetch = require('node-fetch');
 const User = require("../models/user");
 
@@ -6,8 +7,6 @@ module.exports =  (app) => {
     app.post('/pago', (req, res) => {
 
         const { email, token } = req.body;
-
-        console.log(email);
 
         const _data = {
             "amount": 5000,
@@ -20,7 +19,7 @@ module.exports =  (app) => {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
-                "authorization": "Bearer sk_test_ed5da332c3d268d0"
+                "authorization": "Bearer sk_test_47172857dd1a28e3"
             },
             body: JSON.stringify(_data)
         }
@@ -28,7 +27,15 @@ module.exports =  (app) => {
         fetch('https://api.culqi.com/v2/charges', options)
             .then(res => res.json())
             .then(json => {
-                
+                User.findOne({"email": email}, (err, user) => {
+                    if (err) throw err;
+                    user.saldo = user.saldo + 50;
+                    user.save().then(() => {
+                        return res
+                            .status(200)
+                            .json({"redirect":true,"redirect_url":"http://localhost:3000/profile"});
+                    })
+                });
             });
 
     });
